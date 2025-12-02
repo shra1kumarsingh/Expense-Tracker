@@ -1,0 +1,16 @@
+# Dependencies
+node_modules/
+
+# Puppeteer/Chromium caches
+.local-chromium/
+.cache/puppeteer/
+
+# OS / editor files
+.DS_Store
+.env
+/.vscode
+
+# Logs
+npm-debug.log*
+Yarn-debug.log*
+Yarn-error.log*

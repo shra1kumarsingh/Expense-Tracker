@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Tracker</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+    <header class="site-header">
+        <div class="header-inner">
+            <div class="brand">
+                <img src="assets/logo.svg" alt="Expense Tracker" class="logo">
+                <h1>Expense<span class="accent">Tracker</span></h1>
+            </div>
+            <nav class="top-nav">
+                <a href="#" class="nav-link">Home</a>
+                <a href="#" class="nav-link">Reports</a>
+                <a href="#" class="nav-link">Settings</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main-wrap">
+        <section id="auth-section" class="card">
+            <div id="login-form">
+                <h2>Login</h2>
+                <input type="email" id="login-email" placeholder="Email">
+                <input type="password" id="login-password" placeholder="Password">
+                <button onclick="login()">Login</button>
+                <p>Don't have an account? <a href="#" onclick="showRegistration()">Register</a></p>
+                <p id="login-error" class="error-message"></p>
+            </div>
+
+            <div id="registration-form" style="display: none;">
+                <h2>Register</h2>
+                <input type="email" id="register-email" placeholder="Email">
+                <input type="password" id="register-password" placeholder="Password">
+                <button onclick="register()">Register</button>
+                <p>Already have an account? <a href="#" onclick="showLogin()">Login</a></p>
+                <p id="registration-error" class="error-message"></p>
+            </div>
+        </section>
+
+        <section id="expense-tracker" style="display: none;" class="grid">
+            <div class="left-col">
+                <div class="card hero-card">
+                    <div class="hero-inner">
+                        <div>
+                            <h2>Manage your money, simply.</h2>
+                            <p class="muted">Quickly add expenses, set budgets, and track recurring payments.</p>
+                        </div>
+                        <img src="assets/hero-illustration.svg" alt="Illustration" class="hero-img">
+                    </div>
+                </div>
+
+                <div id="add-expense-form" class="card">
+                    <h3 class="card-title">Add / Edit Expense</h3>
+                <input type="hidden" id="expense-id">
+                    <input type="text" id="expense-name" placeholder="Expense Name">
+                    <input type="number" id="expense-amount" placeholder="Amount" step="0.01">
+                <select id="expense-category">
+                    <option value="Food">Food</option>
+                    <option value="Transportation">Transportation</option>
+                    <option value="Entertainment">Entertainment</option>
+                    <option value="Utilities">Utilities</option>
+                    <option value="Other">Other</option>
+                </select>
+                    <input type="date" id="expense-date">
+                    <div class="form-actions">
+                        <button id="expense-save-btn" class="btn btn-primary" onclick="saveExpense()"><i class="fa fa-plus"></i> Add Expense</button>
+                        <button type="button" class="btn" onclick="clearExpenseForm()">Clear</button>
+                    </div>
+                </div>
+            </div>
+
+                <div id="expense-list" class="card">
+                    <h3 class="card-title">Expense List</h3>
+                    <ul id="expenses"></ul>
+                </div>
+
+                <div id="filter-section" class="card">
+                    <h3 class="card-title">Filter & Search</h3>
+                    <input type="text" id="search-term" placeholder="Search">
+                    <select id="filter-category">
+                        <option value="All">All Categories</option>
+                        <option value="Food">Food</option>
+                        <option value="Transportation">Transportation</option>
+                        <option value="Entertainment">Entertainment</option>
+                        <option value="Utilities">Utilities</option>
+                        <option value="Other">Other</option>
+                    </select>
+                    <div class="form-actions"><button class="btn" onclick="filterExpenses()"><i class="fa fa-filter"></i> Filter</button></div>
+                </div>
+
+                <div class="card small">
+                    <button onclick="logout()" class="btn btn-ghost"><i class="fa fa-sign-out-alt"></i> Logout</button>
+                </div>
+            </div>
+
+            <aside class="right-col">
+                <div id="expense-summary" class="card">
+                    <h3 class="card-title">Expense Summary</h3>
+                    <div class="chart-wrap"><canvas id="expense-chart"></canvas></div>
+                    <p id="total-expenses" class="muted">Total Expenses: $0</p>
+                </div>
+
+                <div id="budget-section" class="card">
+                    <h3 class="card-title">Budget</h3>
+                    <input type="number" id="budget-limit" placeholder="Budget Limit">
+                    <div class="form-actions"><button class="btn btn-primary" onclick="setBudget()"><i class="fa fa-flag"></i> Set Budget</button></div>
+                    <p id="budget-alert" class="alert-message"></p>
+                </div>
+
+                <div id="reminder-section" class="card">
+                    <h3 class="card-title">Recurring Expenses</h3>
+                    <input type="text" id="reminder-name" placeholder="Expense Name">
+                    <input type="number" id="reminder-amount" placeholder="Amount">
+                    <input type="date" id="reminder-date">
+                    <select id="reminder-frequency">
+                        <option value="Monthly">Monthly</option>
+                        <option value="Weekly">Weekly</option>
+                    </select>
+                    <div class="form-actions"><button class="btn" onclick="addReminder()"><i class="fa fa-history"></i> Add Reminder</button></div>
+                    <ul id="reminders"></ul>
+                </div>
+
+                <div id="dashboard" style="display: none;" class="card">
+                    <h3 class="card-title">Dashboard</h3>
+                    <p class="muted">Welcome back, <span id="username-display"></span>!</p>
+                    <div id="dashboard-stats"></div>
+                </div>
+            </aside>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Expense Tracker</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
